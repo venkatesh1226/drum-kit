@@ -62,10 +62,31 @@
   <script>
     window.addEventListener("keydown", keydown);
     window.addEventListener("transitionend", back);
+    document.querySelectorAll(".key").forEach(item=>item.addEventListener("click",click));
+    document.querySelectorAll(".key").forEach(item=>item.addEventListener("mouseup",click));
+    document.querySelectorAll(".key").forEach(item=>item.addEventListener("mousedown",click));
+    function click(e){
+      console.log(e)
+      e.path.forEach(item=>{
+        if(item.className==="key"){
+          audioFx(item.attributes[0].nodeValue);
+        }
+      })
+    }
 
+    
     function keydown(e) {
-      var kselect = "" + 'div[data-key="' + e.keyCode + '"]'
-      var aselect = "" + 'audio[data-key="' + e.keyCode + '"]'
+      audioFx(e.keyCode);
+    }
+    function back(e) {
+      var element = e.target.attributes[0].nodeValue;
+      var k = "" + 'div[data-key="' + element + '"]'
+      document.querySelector(k).classList.remove("playing");
+    }
+    
+    function audioFx(num){
+      var kselect = "" + 'div[data-key="' + num + '"]'
+      var aselect = "" + 'audio[data-key="' + num + '"]'
       var key = document.querySelector(kselect);
       var audio = document.querySelector(aselect);
       if (key != null) {
@@ -74,13 +95,6 @@
         audio.play();
 
       }
-    }
-    function back(e) {
-
-      var element = e.target.attributes[0].nodeValue;
-      var k = "" + 'div[data-key="' + element + '"]'
-      document.querySelector(k).classList.remove("playing");
-
     }
 
   </script>
